@@ -54,9 +54,13 @@ if(ENABLE_SVG)
 endif()
 
 # fontforge starts using pkg-config 'correctly' since 2.0.0
-pkg_check_modules(FONTFORGE REQUIRED libfontforge>=2.0.0)
+# pkg_check_modules(FONTFORGE REQUIRED libfontforge>=2.0.0)
+find_path(FF_INCLUDE_PATH fontforge/fontforge.h)
+set(FONTFORGE_INCLUDE_DIRS ${FF_INCLUDE_PATH}/fontforge)
 include_directories(${FONTFORGE_INCLUDE_DIRS})
 link_directories(${FONTFORGE_LIBRARY_DIRS})
+ 
+find_library(FONTFORGE_LIBRARIES fontforge)
 set(PDF2HTMLEX_LIBS ${PDF2HTMLEX_LIBS} ${FONTFORGE_LIBRARIES})
 
 # debug build flags (overwrite default cmake debug flags)
@@ -65,8 +69,8 @@ set(CMAKE_CXX_FLAGS_DEBUG "-ggdb -pg")
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG "-pg")
 
 # release build flags (overwrite default cmake release flags)
-set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG")
-set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
+set(CMAKE_C_FLAGS_RELEASE "-O2")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 
 # generic flags
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
